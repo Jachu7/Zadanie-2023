@@ -11,7 +11,8 @@ import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import CategoryView from "../CategoryView/CategoryView";
 
-function QuestionView() {
+function QuestionView(props) {
+  const { id } = props;
   // Wysiwyg editor
   const [showEditor, setShowEditor] = useState(false);
 
@@ -94,7 +95,7 @@ function QuestionView() {
   }, [cViews]);
 
   return (
-    <li className={`container mt-4 mb-4 ${showElement ? "" : "hidden"}`}>
+    <div className={`container mt-4 mb-4 ${showElement ? "" : "hidden"}`}>
       <div className="row">
         <div className="col-12 p-0">
           <div className="blue-view-container" onSubmit={formPreventDefault}>
@@ -110,7 +111,7 @@ function QuestionView() {
                   <input
                     type="text"
                     className="Q-input-text"
-                    placeholder="Title of question group"
+                    placeholder={`Title of the question group-${id + 1}`}
                   />
                 </div>
                 <div className="Q-btns mx-2">
@@ -144,7 +145,7 @@ function QuestionView() {
           </div>
         </div>
       </div>
-    </li>
+    </div>
   );
 }
 
