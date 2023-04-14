@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   BsArrowsMove,
   BsFillDashCircleFill,
@@ -49,15 +49,52 @@ function QuestionView() {
         onClick={() => {
           setCViews(cViews.filter((cView) => cView.key !== cViews.length));
         }}
+        draggable={true}
       />,
     ]);
   };
 
+  // Dnd
+  useEffect(() => {
+    const items = document.querySelectorAll(".sortable-list-c li");
+    const sortableList = document.querySelector(".sortable-list-c");
+
+    if (items) {
+      items.forEach((item) => {
+        item.addEventListener("dragstart", () => {
+          item.classList.add("draggingc");
+        });
+        item.addEventListener("dragend", () => {
+          item.classList.remove("draggingc");
+        });
+      });
+    }
+
+    const initSortableList = (e) => {
+      e.preventDefault();
+      const draggingItem = document.querySelector(".draggingc");
+
+      let siblings = [...sortableList.querySelectorAll("li:not(.draggingc)")];
+
+      let nextSibling = siblings.find((sibling) => {
+        return e.clientY <= sibling.offsetTop + sibling.offsetHeight / 2;
+      });
+
+      if (nextSibling && nextSibling.parentNode === sortableList) {
+        sortableList.insertBefore(draggingItem, nextSibling);
+      } else {
+        sortableList.appendChild(draggingItem);
+      }
+    };
+
+    sortableList.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      initSortableList(e);
+    });
+  }, [cViews]);
+
   return (
-    <li
-      className={`container mt-4 mb-4 ${showElement ? "" : "hidden"}`}
-      draggable={true}
-    >
+    <li className={`container mt-4 mb-4 ${showElement ? "" : "hidden"}`}>
       <div className="row">
         <div className="col-12 p-0">
           <div className="blue-view-container" onSubmit={formPreventDefault}>
@@ -99,11 +136,11 @@ function QuestionView() {
                   className={`${toggleClass} wysiwyg`}
                 />
               )}
+              <div className={`pdl pdr pb-4 ${toggleClass} addcat`}>
+                <AddCategory onClick={handlecViewClick} />
+                <ul className="sortable-list-c">{cViews}</ul>
+              </div>
             </form>
-            <div className={`pdl pdr pb-4 ${toggleClass} addcat`}>
-              <AddCategory onClick={handlecViewClick} />
-              {cViews}
-            </div>
           </div>
         </div>
       </div>

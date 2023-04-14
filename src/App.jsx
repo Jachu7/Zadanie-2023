@@ -15,22 +15,25 @@ function App() {
         onClick={() => {
           setQViews(qViews.filter((qView) => qView.key !== qViews.length));
         }}
+        draggable={true}
       />,
     ]);
   };
 
   useEffect(() => {
-    const items = document.querySelectorAll(".sortable-list li");
-    const sortableList = document.querySelector(".sortable-list");
+    const items = document.querySelectorAll(".sortable-list-q li");
+    const sortableList = document.querySelector(".sortable-list-q");
 
-    items.forEach((item) => {
-      item.addEventListener("dragstart", () => {
-        item.classList.add("dragging");
+    if (items) {
+      items.forEach((item) => {
+        item.addEventListener("dragstart", () => {
+          item.classList.add("dragging");
+        });
+        item.addEventListener("dragend", () => {
+          item.classList.remove("dragging");
+        });
       });
-      item.addEventListener("dragend", () => {
-        item.classList.remove("dragging");
-      });
-    });
+    }
 
     const initSortableList = (e) => {
       e.preventDefault();
@@ -42,7 +45,11 @@ function App() {
         return e.clientY <= sibling.offsetTop + sibling.offsetHeight / 2;
       });
 
-      sortableList.insertBefore(draggingItem, nextSibling);
+      if (nextSibling && nextSibling.parentNode === sortableList) {
+        sortableList.insertBefore(draggingItem, nextSibling);
+      } else {
+        sortableList.appendChild(draggingItem);
+      }
     };
 
     sortableList.addEventListener("dragover", (e) => {
@@ -55,7 +62,7 @@ function App() {
     <>
       <div className="container">
         <AddQuestionGroup onClick={handleqViewClick} />
-        <ul className="sortable-list">{qViews}</ul>
+        <ul className="sortable-list-q">{qViews}</ul>
       </div>
     </>
   );
