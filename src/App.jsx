@@ -1,35 +1,24 @@
-import AddQuestionGroup from "./components/AddQuestionGroup/AddQuestionGroup";
-import QuestionView from "./components/QuestionView/QuestionView";
-import "./App.css";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-
-import { useState } from "react";
+import Login from "./components/LoginRegister/Login";
+import Register from "./components/LoginRegister/Register";
+import Home from "./components/Home/Home";
+import NotFound from "./components/NotFound/NotFound";
+import { React } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 function App() {
-  const [qViews, setQViews] = useState([]);
-
-  const handleqViewClick = () => {
-    setQViews([
-      ...qViews,
-      <QuestionView
-        key={qViews.length}
-        id={qViews.length}
-        onClick={() => {
-          setQViews(qViews.filter((qView) => qView.key !== qViews.length));
-        }}
-        draggable={true}
-      />,
-    ]);
-  };
-
-  return (
-    <>
-      <div className="container">
-        <AddQuestionGroup onClick={handleqViewClick} />
-        {qViews}
-      </div>
-    </>
-  );
+    return (
+        <>
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/home" element={<Home />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route path="/" element={<Register />} />
+                    <Route path="*" element={<NotFound />} />
+                </Routes>
+            </BrowserRouter>
+        </>
+    );
 }
 
 export default App;
