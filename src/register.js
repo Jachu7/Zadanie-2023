@@ -6,7 +6,6 @@ const auth = getAuth(app);
 const registerWithEmailAndPassword = (email, password) => {
   createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      // User created successfully
       const user = userCredential.user;
       console.log(user);
     })
