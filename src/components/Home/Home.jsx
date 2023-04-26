@@ -1,9 +1,10 @@
 import AddQuestionGroup from "../AddQuestionGroup/AddQuestionGroup";
 import QuestionView from "../QuestionView/QuestionView";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { logout } from "../../login";
+import { logout, isLoggedIn } from "../../login";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
   const [qViews, setQViews] = useState([]);

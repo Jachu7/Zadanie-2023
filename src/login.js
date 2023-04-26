@@ -27,4 +27,9 @@ const logout = () => {
       });
   };
 
-export { loginWithEmailAndPassword, logout };
+  const isLoggedIn = (user) => {
+    return user !== null;
+  };
+  
+
+export { loginWithEmailAndPassword, logout, isLoggedIn, };

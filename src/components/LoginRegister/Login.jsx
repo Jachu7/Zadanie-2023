@@ -8,7 +8,7 @@ import {
   MDBCardBody,
   MDBInput,
 } from "mdb-react-ui-kit";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { loginWithEmailAndPassword } from "../../login";
 import { useState } from "react";
 
@@ -24,9 +24,11 @@ function Login() {
     setPassword(event.target.value);
   };
 
+  const navigate = useNavigate();
   const handleSubmit = (event) => {
     event.preventDefault();
     loginWithEmailAndPassword(email, password);
+    navigate("/home");
   };
 
   return (
