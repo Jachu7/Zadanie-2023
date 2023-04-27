@@ -11,6 +11,8 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { loginWithEmailAndPassword } from "../../login";
 import { useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -25,14 +27,31 @@ function Login() {
   };
 
   const navigate = useNavigate();
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    loginWithEmailAndPassword(email, password);
-    navigate("/home");
+    try {
+      const user = await loginWithEmailAndPassword(email, password);
+      if (user) {
+        console.log("Authentication succeeded");
+        navigate("/home");
+      } else {
+        console.log("Authentication zjebana");
+        toast.error(
+          "Authentication failed. Please check your email and password.",
+          {
+            autoClose: 5000, // Close the toast after 5 seconds
+            closeOnClick: true, // Allow the user to manually close the toast
+          }
+        );
+      }
+    } catch (error) {
+      console.log(error.code, error.message);
+    }
   };
 
   return (
     <MDBContainer fluid>
+      <ToastContainer />
       <MDBRow className="d-flex justify-content-center align-items-center h-100">
         <MDBCol col="12">
           <MDBCard

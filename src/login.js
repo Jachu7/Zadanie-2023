@@ -1,21 +1,24 @@
 import app from "./connect";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
+
 const auth = getAuth(app);
 
-const loginWithEmailAndPassword = (email, password) => {
-  signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      const user = userCredential.user;
-      console.log(user);
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log(errorCode, errorMessage);
-    });
-
+const loginWithEmailAndPassword = async (email, password) => {
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+    console.log(user);
+    return user;
+  } catch (error) {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    console.log(errorCode, errorMessage);
+    throw new Error("Authentication failed");
+  }
 };
+
+
 
 const logout = () => {
     signOut(auth)
@@ -27,9 +30,6 @@ const logout = () => {
       });
   };
 
-  const isLoggedIn = (user) => {
-    return user !== null;
-  };
   
 
-export { loginWithEmailAndPassword, logout, isLoggedIn, };
+export { loginWithEmailAndPassword, logout };

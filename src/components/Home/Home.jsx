@@ -1,9 +1,9 @@
 import AddQuestionGroup from "../AddQuestionGroup/AddQuestionGroup";
 import QuestionView from "../QuestionView/QuestionView";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { logout, isLoggedIn } from "../../login";
+import { logout } from "../../login";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Home() {
@@ -33,11 +33,18 @@ function Home() {
     setQViews(items);
   };
 
+  const navigate = useNavigate();
+  const logout = () => {
+    navigate("/login");
+  };
+
   return (
     <>
-      <div className="container">
+      <div className="container mt-2">
         <AddQuestionGroup onClick={handleqViewClick} />
-        <button onClick={logout}>Log out</button>
+        <button onClick={logout} className="Blue btn btn-primary marl">
+          Log out
+        </button>
       </div>
       <div className="container">
         <DragDropContext onDragEnd={handleOnDragEnd}>
